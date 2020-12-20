@@ -1,21 +1,22 @@
 name: install-kubectl
-description: Install kubectl on debian-based systems
+description: Install kubectl on linux-based systems
 inputs:
   kube_config_data:
     description: Base64 encoded kube config file contents
     required: false
   kubernetes_version:
-    description: Kubernetes version for which to install kubectl
+    description: Kubernetes version for which to install kubectl, like v1.20.0, default is latest
     required: false
 runs:
   using: composite
   steps:
     - shell: bash
-      run: |-
+      run: |
         VERSION=${{ inputs.kubernetes_version }}
         if [[ -z $VERSION ]]; then
           VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         fi
+        echo "Installing Kubectl $VERSION"
 
         curl -LO https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl
         chmod +x ./kubectl
@@ -26,4 +27,6 @@ runs:
           echo "Installing ~/.kube/config"
           [[ ! -d ~/.kube ]] && mkdir ~/.kube
           echo "${{ inputs.kube_config_data }}" | base64 --decode > ~/.kube/config
+        else
+          echo "kube_config_data not set, skipping"
         fi
