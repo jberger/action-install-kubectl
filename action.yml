@@ -12,7 +12,7 @@ runs:
   steps:
     - shell: bash
       run: |
-        VERSION=${{ inputs.kubernetes_version }}
+        VERSION="${{ inputs.kubernetes_version }}"
         if [[ -z $VERSION ]]; then
           VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         fi
@@ -23,7 +23,7 @@ runs:
         sudo mv ./kubectl /usr/local/bin/kubectl
         kubectl version --client
 
-        if [[ ${{ inputs.kube_config_data }} ]]; then
+        if [[ "${{ inputs.kube_config_data }}" ]]; then
           echo "Installing ~/.kube/config"
           [[ ! -d ~/.kube ]] && mkdir ~/.kube
           echo "${{ inputs.kube_config_data }}" | base64 --decode > ~/.kube/config
