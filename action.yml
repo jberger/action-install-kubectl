@@ -27,9 +27,10 @@ runs:
           echo "Installing ~/.kube/config"
           [[ ! -d ~/.kube ]] && mkdir ~/.kube
           echo "${{ inputs.kube_config_data }}" | base64 --decode > ~/.kube/config
+          
+          kubectl config get-contexts
+          kubectl get deployments,pods
         else
           echo "kube_config_data not set, skipping"
         fi
 
-        kubectl config get-contexts
-        kubectl get nodes -o wide
