@@ -30,3 +30,6 @@ runs:
         else
           echo "kube_config_data not set, skipping"
         fi
+
+        kubectl config get-contexts
+        kubectl get nodes -o wide
