@@ -29,7 +29,6 @@ runs:
           echo "${{ inputs.kube_config_data }}" | base64 --decode > ~/.kube/config
           
           kubectl config get-contexts
-          kubectl get deployments,pods
         else
           echo "kube_config_data not set, skipping"
         fi
